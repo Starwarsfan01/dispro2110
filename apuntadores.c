@@ -1,7 +1,14 @@
 #include<stdio.h>
 
 int main(){
-	int *x_ptr = 5;
-	printf(&x_ptr);
-	return 0
+	int *ava,xvc=14,*bva,yvc=15;
+	ava=&xvc;
+	xvc=*bvc;
+	yvc=xvc;
+	ava=bva;
+	printf("la variable = %d \n", xvc);
+	printf("la variable = %d \n", yvc);
+	printf("la variable = %p \n",ava);
+	printf("la variable = %p \n", bva);
+	return 0;
 }
