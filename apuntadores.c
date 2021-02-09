@@ -3,7 +3,7 @@
 int main(){
 	int *ava,xvc=14,*bva,yvc=15;
 	ava=&xvc;
-	xvc=*bvc;
+	xvc=*bva;
 	yvc=xvc;
 	ava=bva;
 	printf("la variable = %d \n", xvc);
