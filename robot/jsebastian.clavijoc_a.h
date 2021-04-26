@@ -25,8 +25,8 @@
 /****************************** SYMBOLIC CONSTANTS ****************************/
                                                                                                                       
 /****************************** NEW TYPE DEFINITIONS **************************/
-typedef enum {FW_check, RW_check, BW_check, LW_check, FORWARD, R_TURN, L_TURN } STATE_T;                                                                                 
-                                                                                 
+typedef enum {ADELANTE, LADOS, 180NOSCPE} STATE_T;
+                                                                    
                                                                                  
 /**************************  GLOBAL DATA DEFINITIONS **************************/
                                                                                  
@@ -56,103 +56,58 @@ typedef enum {FW_check, RW_check, BW_check, LW_check, FORWARD, R_TURN, L_TURN } 
 /*                                                                            */
 /******************************************************************************/
                                                                                 
-int main( int argc, char** argv )                                                   
-{                            
-int FW =0;
-int LW =0;
-int RW =0;
-int BW =0;
-                                                   
-STATE_T state;
+int jsebastian_dot_clavijoc_robot(){
+   static STATE_T state=ADELANTE;
 
-Testing_Maze();                                                      
-               
-state = FW_check;
 
-                                                                 
-while (Running() ) {
-	switch(state){
-		case FW_check:
-			if(Is_There_Wall()){
-				Robot(COUNTER_CW);
-				FW++;
-				state=RW_check;
-				}
-			else if(!Is_There_Wall()){
-				state=FORWARD;  
-				}
-		break;
-		case RW_check:
-			if(Is_There_Wall()){
-				Robot(CLOCK_WISE);
-				RW++;
-				state=BW_check;
-				}
-			else{
-				state=BW_check; 
-			}
-		break;
-		case BW_check:
-			if(Is_There_Wall()){
-				Robot(CLOCK_WISE);
-				BW++;
-				state=LW_check;
-				}
-			else{
-				state=LW_check; 
-			}
-		break;
-		case LW_check:
-			if(Is_There_Wall()){
-				Robot(COUNTER_CW);
-				LW++;
-				state=FORWARD;
-				}
-			else{
-				state=FORWARD;
-}
-		break;
-		case FORWARD:
-			if(FW==0){
-				Forward();
-				state=L_TURN;}
-			else{
-				LW=0;
-				RW=0;
-				BW=0;
-				FW=0;
-				state=L_TURN;  
-		}
-		break;
-		case R_TURN:
-			if(FW==1){
-				Robot(COUNTER_CW);
-				Forward();
-				state=L_TURN;}
-			else{                                                   
-                                 LW=0;                                           
-                                 RW=0;                                           
-                                 BW=0;                                           
-                                 FW=0;                                           
-                                 state=FW_check;                                 
-                 }
-		break;
-		case L_TURN:
-			if(FW==1&&LW==1){
-				Robot(CLOCK_WISE);
-				Forward();
-				state=FW_check;
-				}
-			else {
-				LW=0;
-				RW=0;
-				BW=0;
-				FW=0;
-				state=FW_check;
-			}		
-		break; 
-	}
-}
-Challenge_Was_Finished();
-} /* main */
+   if(TRUE)
+   {
+       switch(state)
+       {
+            case ADELANTE:
+                if(Is_There_Wall(JSEBASTIAN_DOT_CLAVIJOC))
+                {
+                	Robot(JSEBASTIAN_DOT_CLAVIJOC,COUNTER_CW);
+                    	state=LADOS;
+                    
+                }//if(Is_There_Wall())
+                else
+                {
+                    Forward(JSEBASTIAN_DOT_CLAVIJOC);
+                    state=ADELANTE;
+                }//else=>if(Is_There_Wall())
+            break;
 
+            case LADOS:
+                if(!Is_There_Wall(JSEBASTIAN_DOT_CLAVIJOC))
+                {
+                    Forward(JSEBASTIAN_DOT_CLAVIJOC);
+                    Sonar(JSEBASTIAN_DOT_CLAVIJOC,CLOCK_WISE);
+                    state=180NOSCPE;
+                }
+                else
+                {
+                    Robot(JSEBASTIAN_DOT_CLAVIJOC,COUNTER_CW);
+                    state=LADOS;
+                }//else=>if(Is_There_Wall())
+            break;
+
+            case 180NOSCPE:
+                if(!Is_There_Wall(JSEBASTIAN_DOT_CLAVIJOC))
+                {
+                    Robot(JSEBASTIAN_DOT_CLAVIJOC,CLOCK_WISE);
+                    Forward(JSEBASTIAN_DOT_CLAVIJOC);
+                    Robot(JSEBASTIAN_DOT_CLAVIJOC,CLOCK_WISE);
+                    Sonar(JSEBASTIAN_DOT_CLAVIJOC,COUNTER_CW);
+                    state=LADOS;
+                }
+                else
+                {
+                    Sonar(JSEBASTIAN_DOT_CLAVIJOC,COUNTER_CW);
+                    state=LADOS;
+                }//else=>if(Is_There_Wall())
+            break;
+//RETROCEDER
+       }//switch(state)
+   }//while(Running())
+}//main()
