@@ -12,7 +12,6 @@
 #include "matrix.h"
 
 
-
 /************************** Prototypes of Functions ***************************/
 
 /* --------------------------- Private Functions ---------------------------- */
@@ -135,6 +134,3 @@ for( ii = 0; ii < mtx_rows; ii++ )
 return 1;
 
 } /* Show_Mtx_Screen */
-
-
-
